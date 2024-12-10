@@ -13,6 +13,9 @@
       <div class="mb-4">
         <label for="imagen" class="block text-gray-700">Imagen</label>
         <input type="file" id="imagen" @change="handleFileUpload" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+        <div v-if="comunidad.imagen && typeof comunidad.imagen === 'string'" class="mt-2">
+          <img :src="`/server/${comunidad.imagen}`" alt="Imagen actual" class="w-32 h-32 object-cover">
+        </div>
       </div>
       <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Guardar Cambios</button>
     </form>
@@ -38,7 +41,7 @@ export default {
       this.comunidad.imagen = event.target.files[0];
     },
     async cargarComunidad() {
-      const id = this.$route.params.id; // Asume que el ID de la comunidad se pasa como parámetro de la ruta
+      const id = this.$route.params.id;  
       try {
         const response = await fetch(`/api/index.php?consultar=${id}`);
         const data = await response.json();
@@ -53,12 +56,12 @@ export default {
       }
     },
     async editarComunidad() {
-      const id = this.$route.params.id; // Asume que el ID de la comunidad se pasa como parámetro de la ruta
+      const id = this.$route.params.id;  
       const formData = new FormData();
       formData.append('id', id);
       formData.append('nombre', this.comunidad.nombre);
       formData.append('web', this.comunidad.web);
-      if (this.comunidad.imagen) {
+      if (this.comunidad.imagen && typeof this.comunidad.imagen !== 'string') {
         formData.append('imagen', this.comunidad.imagen);
       }
 
@@ -80,7 +83,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* Estilos específicos para el formulario de edición */
-</style>

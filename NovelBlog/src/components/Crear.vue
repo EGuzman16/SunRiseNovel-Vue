@@ -59,6 +59,3 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Estilos específicos para el formulario de creación */
-</style>

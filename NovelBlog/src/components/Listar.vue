@@ -71,6 +71,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Estilos específicos para la lista de comunidades */
-</style>
+ 
