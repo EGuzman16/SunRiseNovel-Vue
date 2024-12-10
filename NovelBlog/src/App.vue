@@ -62,6 +62,7 @@ export default {
                     <li class="mb-4 md:mb-0 mt-4 md:mt-0"><router-link @click.native="closeMenu" to="/blog">Blog</router-link></li>
                     <li class="mb-4 md:mb-0 mt-4 md:mt-0"><router-link @click.native="closeMenu" to="/recommendations">Recomendaciones</router-link></li>
                     <li class="mb-4 md:mb-0 mt-4 md:mt-0"><router-link @click.native="closeMenu" to="/chat">Chat global</router-link></li>
+                    <li class="mb-4 md:mb-0 mt-4 md:mt-0"><router-link @click.native="closeMenu" to="/comunidades">Comunidades</router-link></li>
                     <li class="mb-4 md:mb-0 mt-4 md:mt-0">
                         <router-link @click.native="closeMenu" to="/perfil" class="flex items-center">
                             <div class="w-8 h-8 rounded-full overflow-hidden">
