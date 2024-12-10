@@ -39,13 +39,19 @@ if (isset($_GET["borrar"])){
 
 // Inserta un nuevo registro y recepciona en método POST los datos de nombre, web e imagen
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET["insertar"])) {
-    $data = json_decode(file_get_contents("php://input"));
-    $nombre = $data->nombre;
-    $web = $data->web;
-    $imagen = $data->imagen;
-    if (($nombre != "") && ($web != "") && ($imagen != "")) {
-        $sqlComunidades = mysqli_query($conexionBD, "INSERT INTO comunidades(nombre, web, imagen) VALUES('$nombre', '$web', '$imagen')");
-        echo json_encode(["success" => 1]);
+    $nombre = $_POST['nombre'];
+    $web = $_POST['web'];
+    $imagen = $_FILES['imagen'];
+
+    if ($nombre != "" && $web != "" && $imagen['name'] != "") {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($imagen["name"]);
+        if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+            $sqlComunidades = mysqli_query($conexionBD, "INSERT INTO comunidades(nombre, web, imagen) VALUES('$nombre', '$web', '$target_file')");
+            echo json_encode(["success" => 1]);
+        } else {
+            echo json_encode(["success" => 0, "message" => "Error al subir la imagen"]);
+        }
     } else {
         echo json_encode(["success" => 0, "message" => "Datos incompletos"]);
     }
@@ -54,13 +60,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET["insertar"])) {
 
 // Actualiza datos pero recepciona datos de nombre, web, imagen y una clave para realizar la actualización
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_GET["actualizar"])) {
-    $data = json_decode(file_get_contents("php://input"));
-    $id = $data->id;
-    $nombre = $data->nombre;
-    $web = $data->web;
-    $imagen = $data->imagen;
-    $sqlComunidades = mysqli_query($conexionBD,"UPDATE comunidades SET nombre='$nombre', web='$web', imagen='$imagen' WHERE ID='$id'");
-    echo json_encode(["success"=>1]);
+    $id = $_POST['id'];
+    $nombre = $_POST['nombre'];
+    $web = $_POST['web'];
+    $imagen = isset($_FILES['imagen']) ? $_FILES['imagen'] : null;
+
+    if ($imagen && $imagen['name'] != "") {
+        $target_dir = "uploads/";
+        $target_file = $target_dir . basename($imagen["name"]);
+        if (move_uploaded_file($imagen["tmp_name"], $target_file)) {
+            $sqlComunidades = mysqli_query($conexionBD, "UPDATE comunidades SET nombre='$nombre', web='$web', imagen='$target_file' WHERE ID='$id'");
+        } else {
+            echo json_encode(["success" => 0, "message" => "Error al subir la imagen"]);
+            exit();
+        }
+    } else {
+        $sqlComunidades = mysqli_query($conexionBD, "UPDATE comunidades SET nombre='$nombre', web='$web' WHERE ID='$id'");
+    }
+
+    echo json_encode(["success" => 1]);
     exit();
 }
 

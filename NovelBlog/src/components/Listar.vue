@@ -20,7 +20,7 @@
           <td class="py-2 px-4 border-b items-center">{{ comunidad.nombre }}</td>
           <td class="py-2 px-4 border-b items-center">{{ comunidad.web }}</td>
           <td class="py-2 px-4 border-b items-center">
-            <img :src="comunidad.imagen" alt="Imagen" class="w-16 h-16 object-cover mx-auto">
+            <img :src="`/server/${comunidad.imagen}`" alt="Imagen" class="w-16 h-16 object-cover mx-auto">
           </td>
           <td class="py-2 px-4 mt-6 border-b flex justify-center items-center space-x-2">
             <router-link :to="`/comunidades/editar/${comunidad.ID}`" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-700">Editar</router-link>
